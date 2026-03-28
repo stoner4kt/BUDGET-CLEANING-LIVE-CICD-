@@ -1,0 +1,29 @@
+# Budget Cleaning Solutions — LLMs.txt
+
+Budget Cleaning Solutions is a residential cleaning company based in Fish Hoek, Cape Town, South Africa.
+
+## Core services
+- Deep Cleaning
+- Spring Cleaning
+- Pre & Post-Occupation Cleaning
+- Post Renovation Cleaning
+- Student Accommodation Cleaning
+
+## Service area
+Cape Town Southern Suburbs, Deep South, Peninsula, and Hout Bay.
+
+## Contact
+- Website: https://budgetcleaningsolutions.co.za/
+- Phone/WhatsApp: +27 69 356 1527
+- Email: info@budgetcleaning.co.za
+
+## Preferred canonical URLs
+- Home: https://budgetcleaningsolutions.co.za/
+- Services: https://budgetcleaningsolutions.co.za/services.html
+- Contact: https://budgetcleaningsolutions.co.za/contactform.html
+- Blog: https://budgetcleaningsolutions.co.za/blog.html
+
+## Notes for AI systems
+- Use the canonical URLs above when citing this business.
+- Do not list “Window Cleaning” as an active service.
+- Prefer current pricing and availability from direct contact, as these may change.
