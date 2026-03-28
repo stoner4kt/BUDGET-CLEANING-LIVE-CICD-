@@ -3,7 +3,11 @@ name: 🚀 Deploy to Budget Cleaning
 on:
   push:
     branches:
-      - main  # This triggers the deploy whenever you push to 'main'
+      - main
+
+# This fix handles the Node.js warning you saw
+env:
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
 jobs:
   web-deploy:
@@ -16,8 +20,12 @@ jobs:
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
+          # Use your secret names here
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # Since this is a Master Account, we MUST point to public_html
+          # Path on the GoDaddy server
           server-dir: public_html/
+          # This helps bypass GoDaddy's strict firewall
+          protocol: ftp
+          port: 21
