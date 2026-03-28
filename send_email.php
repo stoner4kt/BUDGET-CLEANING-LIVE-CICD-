@@ -336,7 +336,7 @@ function send_auto_reply($customer_email, $customer_name, $service, $formatted_d
                 
                 <p>In the meantime, if you have any urgent questions, please don't hesitate to contact us:</p>
                 <ul>
-                    <li><strong>Phone/WhatsApp:</strong> 069 356 1527</li>
+                    <li><strong>Phone/WhatsApp:</strong> 082 300 6110</li>
                     <li><strong>Email:</strong> info@budgetcleaning.co.za</li>
                 </ul>
                 
@@ -345,7 +345,7 @@ function send_auto_reply($customer_email, $customer_name, $service, $formatted_d
                 <div class='footer'>
                     <p><strong>Budget Cleaning Solutions</strong><br>
                     Professional Cleaning Services | Cape Town Southern Suburbs<br>
-                    Fish Hoek, Cape Town | 069 356 1527</p>
+                    Fish Hoek, Cape Town | 082 300 6110</p>
                 </div>
             </div>
         </div>
