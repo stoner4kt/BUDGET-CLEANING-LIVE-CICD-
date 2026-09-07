@@ -16,12 +16,16 @@ $to_email = "info@budgetcleaning.co.za"; // Your client's email
 $from_email = "info@budgetcleaning.co.za"; // Sender email (should be from your domain)
 $website_name = "Budget Cleaning Solutions";
 
-// Function to sanitize input data
+// Function to sanitize input data (strips dangerous characters, does NOT HTML-encode)
 function sanitize_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
-    $data = htmlspecialchars($data);
     return $data;
+}
+
+// Function to safely output data inside HTML (use only in HTML email body)
+function html_safe($data) {
+    return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 }
 
 // Function to validate email
@@ -92,10 +96,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Format the service date
     $formatted_date = date('d F Y', strtotime($service_date));
     
-    // Create email subject
+    // Create email subject (plain text - no HTML encoding needed)
     $subject = "New Quote Request from $name - $service";
     
-    // Create email body (HTML format)
+    // Create email body (HTML format - use html_safe() for all user-supplied values)
     $email_body = "
     <!DOCTYPE html>
     <html>
@@ -161,42 +165,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
                 <div class='field'>
                     <span class='field-label'>Name:</span>
-                    <span class='field-value'>$name</span>
+                    <span class='field-value'>" . html_safe($name) . "</span>
                 </div>
                 
                 <div class='field'>
                     <span class='field-label'>Email:</span>
-                    <span class='field-value'><a href='mailto:$email'>$email</a></span>
+                    <span class='field-value'><a href='mailto:" . html_safe($email) . "'>" . html_safe($email) . "</a></span>
                 </div>
                 
                 <div class='field'>
                     <span class='field-label'>Phone:</span>
-                    <span class='field-value'><a href='tel:$phone'>$phone</a></span>
+                    <span class='field-value'><a href='tel:" . html_safe($phone) . "'>" . html_safe($phone) . "</a></span>
                 </div>
                 
                 <div class='field'>
                     <span class='field-label'>Area/Suburb:</span>
-                    <span class='field-value'>$area</span>
+                    <span class='field-value'>" . html_safe($area) . "</span>
                 </div>
                 
                 <div class='field'>
                     <span class='field-label'>Service Required:</span>
-                    <span class='field-value'>$service</span>
+                    <span class='field-value'>" . html_safe($service) . "</span>
                 </div>
                 
                 <div class='field'>
                     <span class='field-label'>Date Service Required:</span>
-                    <span class='field-value'>$formatted_date</span>
+                    <span class='field-value'>" . html_safe($formatted_date) . "</span>
                 </div>
                 
                 <div class='field'>
                     <span class='field-label'>Property Size:</span>
-                    <span class='field-value'>$property_size</span>
+                    <span class='field-value'>" . html_safe($property_size) . "</span>
                 </div>
                 
                 <div class='field'>
                     <span class='field-label'>Additional Message:</span>
-                    <span class='field-value'>$message</span>
+                    <span class='field-value'>" . html_safe($message) . "</span>
                 </div>
                 
                 <div class='footer'>
@@ -209,7 +213,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </html>
     ";
     
-    // Create plain text version for email clients that don't support HTML
+    // Create plain text version (plain text - no HTML encoding needed)
     $plain_text_body = "
 New Quote Request - $website_name
 
@@ -326,8 +330,8 @@ function send_auto_reply($customer_email, $customer_name, $service, $formatted_d
                 <p>DOMESTIC HOME CLEANERS</p>
             </div>
             <div class='content'>
-                <h2>Thank You, $customer_name!</h2>
-                <p>We have received your quote request for <strong>$service</strong> on <strong>$formatted_date</strong>.</p>
+                <h2>Thank You, " . html_safe($customer_name) . "!</h2>
+                <p>We have received your quote request for <strong>" . html_safe($service) . "</strong> on <strong>" . html_safe($formatted_date) . "</strong>.</p>
                 
                 <div class='highlight'>
                     <p><strong>What happens next?</strong></p>
