@@ -811,6 +811,43 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 /* Footer */
+.faq-section {
+    padding: 80px 0;
+    background: var(--light-bg);
+}
+
+.faq-list {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.faq-list details {
+    background: var(--white);
+    border: 1px solid var(--gray-border);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    padding: 0 24px;
+}
+
+.faq-list summary {
+    color: var(--primary-color);
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    padding: 18px 28px 18px 0;
+}
+
+.faq-list p {
+    color: var(--light-text);
+    padding: 0 0 18px;
+}
+
+.faq-list a {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
 .footer {
     background-color: var(--dark-text);
     color: var(--white);
