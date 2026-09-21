@@ -1,0 +1,6 @@
+# Keep every public URL on the HTTPS non-www origin used by canonicals and sitemap.xml.
+RewriteEngine On
+
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} !^budgetcleaningsolutions\.co\.za$ [NC]
+RewriteRule ^ https://budgetcleaningsolutions.co.za%{REQUEST_URI} [R=301,L]
