@@ -17,6 +17,12 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
+      - name: Update sitemap lastmod
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+          sed -i "s#<lastmod>.*</lastmod>#<lastmod>$TODAY</lastmod>#g" sitemap.xml
+          echo "Sitemap updated to $TODAY"
+
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
