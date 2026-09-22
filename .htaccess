@@ -1,4 +1,15 @@
+# Budget Cleaning Solutions - canonical host and crawler file handling
 RewriteEngine On
+
+# Always serve the canonical HTTPS non-www host.
 RewriteCond %{HTTPS} !=on [OR]
 RewriteCond %{HTTP_HOST} !^budgetcleaning\.co\.za$ [NC]
 RewriteRule ^ https://budgetcleaning.co.za%{REQUEST_URI} [R=301,L]
+
+# Keep crawler-control files as direct static files.
+RewriteRule ^sitemap\.xml$ - [L]
+RewriteRule ^robots\.txt$ - [L]
+
+# Explicit MIME types for crawler files.
+AddType application/xml .xml
+AddType text/plain .txt
