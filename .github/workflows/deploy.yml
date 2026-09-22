@@ -5,7 +5,6 @@ on:
     branches:
       - main
 
-# This fix handles the Node.js warning you saw
 env:
   ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
@@ -17,21 +16,58 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
+      - name: Validate crawler files
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          sitemap = Path("sitemap.xml")
+          robots = Path("robots.txt")
+
+          if not sitemap.is_file():
+              raise SystemExit("sitemap.xml is missing")
+          if not robots.is_file():
+              raise SystemExit("robots.txt is missing")
+
+          tree = ET.parse(sitemap)
+          sitemap_text = sitemap.read_text(encoding="utf-8")
+          required_prefix = "https://budgetcleaning.co.za/"
+          urls = []
+          for element in tree.getroot():
+              if element.tag.endswith("url"):
+                  for child in element:
+                      if child.tag.endswith("loc") and child.text:
+                          urls.append(child.text.strip())
+
+          if not urls:
+              raise SystemExit("sitemap.xml contains no URLs")
+
+          invalid = [url for url in urls if not url.startswith(required_prefix)]
+          if invalid:
+              raise SystemExit("Sitemap contains non-canonical URLs: " + ", ".join(invalid))
+
+          if "Sitemap: https://budgetcleaning.co.za/sitemap.xml" not in sitemap_text.replace("sitemap.xml", "sitemap.xml") or "Sitemap: https://budgetcleaning.co.za/sitemap.xml" not in robots.read_text(encoding="utf-8"):
+              raise SystemExit("robots.txt does not reference the canonical sitemap")
+
+          print(f"Validated sitemap.xml: {len(urls)} canonical URLs")
+          PY
+
       - name: Update sitemap lastmod
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           sed -i "s#<lastmod>.*</lastmod>#<lastmod>$TODAY</lastmod>#g" sitemap.xml
           echo "Sitemap updated to $TODAY"
 
+      - name: Validate sitemap XML after lastmod update
+        run: python -c "import xml.etree.ElementTree as ET; ET.parse('sitemap.xml'); print('sitemap.xml is valid XML')"
+
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          # Use your secret names here
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # Path on the GoDaddy server
           server-dir: public_html/
-          # This helps bypass GoDaddy's strict firewall
           protocol: ftp
           port: 21
