@@ -47,7 +47,8 @@ jobs:
           if invalid:
               raise SystemExit("Sitemap contains non-canonical URLs: " + ", ".join(invalid))
 
-          if "Sitemap: https://budgetcleaning.co.za/sitemap.xml" not in sitemap_text.replace("sitemap.xml", "sitemap.xml") or "Sitemap: https://budgetcleaning.co.za/sitemap.xml" not in robots.read_text(encoding="utf-8"):
+          robots_text = robots.read_text(encoding="utf-8")
+          if "Sitemap: https://budgetcleaning.co.za/sitemap.xml" not in robots_text:
               raise SystemExit("robots.txt does not reference the canonical sitemap")
 
           print(f"Validated sitemap.xml: {len(urls)} canonical URLs")
